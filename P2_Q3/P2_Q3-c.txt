@@ -1,0 +1,41 @@
+c) esporre il significato delle varie tipologie di vincoli che si possono
+   riscontrare nella progettazione delle basi di dati e dei riflessi che
+   essi hanno sulle operazioni di inserimento, aggiornamento e cancellazione.
+
+I vincoli che si possono riscontrare sono di due categorie, i cosiddetti vincoli
+intratabellari (che si applicano a una sola tabella) e quelli intertabellari
+(che riguardano più tabelle, di solito in relazione tra loro).
+I primi sono applicati all'atto dell'inserimento di un nuovo record nel database,
+e sono principalmente la chiave primaria, il vincolo Not Null, il vincolo
+Unique e l'istruzione Check. Il primo definisce quale o quali campi rappresentano
+la chiave primaria della tabella e, implicitamente, impone un vincolo Not Null
+e Unique alla n-upla formata dai campi scelti. Il vincolo Not Null impedisce che
+un campo abbia il valore NULL, mentre il vincolo Unique impedisce che vi siano,
+nella stessa tabella, due righe con lo stesso valore per quel campo (con
+l'eccezione del valore null, se ammesso). L'espressione Check, infine, permette
+di effettuare un controllo più fine sui valori inseriti, proibendo l'inserimento
+di valori che non soddisfino determinate proprietà che non possono essere
+espresse attraverso i tipi di dato (ad esempio il fatto che un'età sia maggiore
+di 18).
+
+I vincoli intertabellari sono i vincoli di chiave esterna e i vincoli di identità
+referenziale ad essi associati. In particolare, è possibile definire il
+comportamento associato ad un campo definito chiave esterna in caso di
+aggiornamento (ON UPDATE) o eliminazione (ON DELETE) di un record nella tabella
+padre cui il campo fa riferimento. I comportamenti possibili sono 4:
+  - CASCADE: l'operazione eseguita nel record padre viene ripetuta sui record
+             figli; se elimino un record dalla tabella padre, tutti i record che
+             possiedono lo stesso valore del campo nel record eliminato nella
+             tabella figlia vengono a loro volta eliminati. In caso di
+             aggiornamento la modifica al vecchio valore viene ripetuta sui
+             record figli.
+  - NO ACTION: l'operazione nella tabella padre viene bloccata finché non
+               vengono rimossi tutti i dati esistenti vincolati al vecchio
+               valore.
+  - SET DEFAULT: l'operazione viene completata nel record padre, mentre per i
+                 record figli viene impostato il valore di default previsto per
+                 il campo (se definito in fase di creazione) oppure quello di
+                 sistema (se non definito diversamente).
+  - SET NULL: come SET DEFAULT, ma imposta il valore NULL. Nel caso in cui sia
+              impostata la clausola NOT NULL per quel campo, si comporta come
+              NO ACTION.
