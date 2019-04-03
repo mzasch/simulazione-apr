@@ -14,8 +14,8 @@ FROM Utenti
     SELECT Visualizza.CFUtente, COUNT(*) AS Film_Visualizzati
     FROM Visualizza
     GROUP BY Visualizza.CFUtente
-  ) USING (Utenti.CF)
-HAVING Film_Visualizzati = 0
+  ) ON Visualizza.CFUtente = Utenti.CF
+WHERE Film_Visualizzati IS NULL
 ORDER BY Utenti.Cognome, Utenti.Nome;
 
 SELECT DISTINCT Utenti.* -- oppure Utenti.Cognome, Utenti.Nome
@@ -36,4 +36,18 @@ SELECT Film.Titolo, COUNT(*) AS Visualizzazioni
 FROM Film
   JOIN Visualizza ON Film.Id = Visualizza.IdFilm
 WHERE Visualizza.DataVisualizza BETWEEN [DataInizio] AND [DataFine]
-GROUP BY Film.Id;
+GROUP BY Film.Id
+ORDER BY Visualizzazioni
+LIMIT 1;
+
+
+SELECT Film.Titolo
+FROM Film
+WHERE Film.Id = (
+  SELECT Visualizza.IdFilm
+  FROM Visualizza
+  WHERE Visualizza.DataVisualizza BETWEEN [DataInizio] AND [DataFine]
+  GROUP BY Visualizza.IdFilm
+  ORDER BY COUNT(*)
+  LIMIT 1;  
+);
