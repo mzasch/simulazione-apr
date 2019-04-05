@@ -21,10 +21,8 @@ ORDER BY Utenti.Cognome, Utenti.Nome;
 SELECT DISTINCT Utenti.* -- oppure Utenti.Cognome, Utenti.Nome
 FROM Utenti
 WHERE Utenti.CF NOT IN (
-  SELECT Utenti.CF
-  FROM Utenti
-    JOIN Visualizza ON Visualizza.CFUtente = Utenti.CF
-  GROUP BY Utenti.CF
+  SELECT DISTINCT Visualizza.CFUtente
+  FROM Visualizza
 )
 ORDER BY Utenti.Cognome, Utenti.Nome;
 
@@ -36,4 +34,6 @@ SELECT Film.Titolo, COUNT(*) AS Visualizzazioni
 FROM Film
   JOIN Visualizza ON Film.Id = Visualizza.IdFilm
 WHERE Visualizza.DataVisualizza BETWEEN [DataInizio] AND [DataFine]
-GROUP BY Film.Id;
+GROUP BY Film.Id
+ORDER BY Visualizzazioni
+LIMIT 1;
