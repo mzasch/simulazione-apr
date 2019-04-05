@@ -14,8 +14,8 @@ FROM Utenti
     SELECT Visualizza.CFUtente, COUNT(*) AS Film_Visualizzati
     FROM Visualizza
     GROUP BY Visualizza.CFUtente
-  ) USING (Utenti.CF)
-HAVING Film_Visualizzati = 0
+  ) ON Visualizza.CFUtente = Utenti.CF
+WHERE Film_Visualizzati IS NULL
 ORDER BY Utenti.Cognome, Utenti.Nome;
 
 SELECT DISTINCT Utenti.* -- oppure Utenti.Cognome, Utenti.Nome
